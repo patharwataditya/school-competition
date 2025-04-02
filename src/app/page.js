@@ -1,103 +1,109 @@
-import Image from "next/image";
+import React from "react";
 
-export default function Home() {
+export default function CompetitionDetails() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.js
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
+      {/* Header */}
+      <header className="text-center mb-8">
+        <h1 className="text-3xl font-bold text-blue-800">
+          APPASAHEB BIRNALE PUBLIC SCHOOL SANGLI
+        </h1>
+        <p className="text-xl text-gray-600 mt-2">
+          WORLD LEADERSHIP GLOBAL FORUM
+        </p>
+        <p className="text-lg text-gray-500">
+          INTER-SCHOOL COMPETITION - HON. BABANRAO BIRNALE TROPHY (2025-26)
+        </p>
+      </header>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+      {/* Card Container */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl w-full">
+        {/* Round 1 Card */}
+        <div className="bg-white shadow-md rounded-lg p-6">
+          <h2 className="text-xl font-bold text-blue-700 mb-2">Round 1: Mock Summit</h2>
+          <ul className="list-disc pl-5 space-y-2 text-gray-700">
+            <li>Each team represents a global organization.</li>
+            <li>Lock your organization in the Google Form (no changes allowed).</li>
+            <li>Presentation via PPT or Oral Presentation (5 minutes).</li>
+            <li>Minus marking for exceeding time limits.</li>
+            <li>Judging Criteria: Research, diplomacy, teamwork, presentation.</li>
+            <li>Scoring: 30 points maximum.</li>
+          </ul>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+        {/* Round 2 Card */}
+        <div className="bg-white shadow-md rounded-lg p-6">
+          <h2 className="text-xl font-bold text-blue-700 mb-2">
+            Round 2: Passport to Power (Quiz Round)
+          </h2>
+          <ul className="list-disc pl-5 space-y-2 text-gray-700">
+            <li>Rapid-fire quiz based on the selected organization.</li>
+            <li>Time allotted: 1 minute per team.</li>
+            <li>Correct answers = Stamps in their passport.</li>
+            <li>Teams with 5+ stamps move forward.</li>
+            <li>Lowest-scoring teams are eliminated.</li>
+            <li>Wild Card Round for borderline teams (e.g., mimicking a world leader’s speech).</li>
+          </ul>
+        </div>
+
+        {/* Round 3 Card */}
+        <div className="bg-white shadow-md rounded-lg p-6">
+          <h2 className="text-xl font-bold text-blue-700 mb-2">
+            Round 3: Summit Showdown (Buzzer & Strategy)
+          </h2>
+          <ul className="list-disc pl-5 space-y-2 text-gray-700">
+            <li>Fast-paced buzzer round on global summits, organizations, and issues.</li>
+            <li>Teams must buzz within 30 seconds.</li>
+            <li>Correct answers earn "Summit Coins"; wrong answers deduct 1 mark.</li>
+          </ul>
+        </div>
+
+        {/* Round 4 Card */}
+        <div className="bg-white shadow-md rounded-lg p-6">
+          <h2 className="text-xl font-bold text-blue-700 mb-2">
+            Round 4: Crisis Room (Role Play & Debate)
+          </h2>
+          <ul className="list-disc pl-5 space-y-2 text-gray-700">
+            <li>Each team represents a country in a crisis summit.</li>
+            <li>Assigned crises: Climate change, refugee crisis, pandemic response, poverty.</li>
+            <li>Negotiate and propose solutions in 5 minutes.</li>
+            <li>Judging Criteria: Creativity, facts, negotiation skills.</li>
+            <li>Twist: Secret Disruptor (judge as journalist throws challenges).</li>
+          </ul>
+        </div>
+
+        {/* Round 5 Card */}
+        <div className="bg-white shadow-md rounded-lg p-6">
+          <h2 className="text-xl font-bold text-blue-700 mb-2">
+            Round 5: The Ultimate Summit (Finale)
+          </h2>
+          <ul className="list-disc pl-5 space-y-2 text-gray-700">
+            <li>Top 2 teams face off in a mock global summit.</li>
+            <li>Global issue announced on the spot.</li>
+            <li>Teams argue for/against the issue.</li>
+            <li>Win over neutral nations (judges + audience).</li>
+            <li>Best arguments win the competition.</li>
+          </ul>
+        </div>
+
+        {/* Rules Card */}
+        <div className="bg-white shadow-md rounded-lg p-6 col-span-1 md:col-span-2 lg:col-span-3">
+          <h2 className="text-xl font-bold text-red-700 mb-2">General Rules & Regulations</h2>
+          <ul className="list-disc pl-5 space-y-2 text-gray-700">
+            <li>Entry Fees: ₹250 per group.</li>
+            <li>Each school can participate with only 1 group (5 students max).</li>
+            <li>Students can be from grades 8th, 9th, or 10th (mixed or single grade).</li>
+            <li>One in-charge teacher required from each school.</li>
+            <li>Correctly filled Google Form + paid entry fees finalize participation.</li>
+            <li>Props Allowed: Charts, flags, creative presentations.</li>
+            <li>Strict adherence to time limits; cheating leads to disqualification.</li>
+            <li>No use of mobile phones or external help.</li>
+            <li>Judges’ decision is final and binding.</li>
+            <li>Breakfast included in entry fees; lunch is paid.</li>
+            <li>Decent color dress code for students.</li>
+          </ul>
+        </div>
+      </div>
     </div>
   );
 }
