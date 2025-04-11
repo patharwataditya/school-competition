@@ -80,7 +80,7 @@ export default function HomePage() {
     setError("");
     
     try {
-      const response = await fetch("https://ud2bqdxp3m.execute-api.us-east-1.amazonaws.com/updatetopic", {
+      const response = await fetch("https://26zh11j7rc.execute-api.us-east-1.amazonaws.com/SCupdateTopic", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -331,7 +331,7 @@ export default function HomePage() {
         )}
         
         {/* Competition Rules and Information */}
-        {/* Competition Rules and Information */}
+       
 <div className="mt-12 bg-blue-50 rounded-lg shadow-md p-6">
   <h2 className="text-xl font-bold text-blue-800 mb-4">Competition Rules & Information</h2>
   <div className="space-y-4 text-gray-700">

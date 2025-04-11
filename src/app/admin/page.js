@@ -95,7 +95,7 @@ export default function AdminPage() {
   const handleRemoveTopic = async (topicName) => {
     if (window.confirm(`Are you sure you want to remove the topic: "${topicName}"?`)) {
       try {
-        const response = await fetch("https://ud2bqdxp3m.execute-api.us-east-1.amazonaws.com/removetopic", {
+        const response = await fetch("https://26zh11j7rc.execute-api.us-east-1.amazonaws.com/SCremoveTopic", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ topicName }),
