@@ -59,26 +59,26 @@ export default function CompetitionDetails() {
             <li>Correct answers = Stamps in their passport.</li>
             <li>Teams with 5+ stamps move forward.</li>
             <li>Lowest-scoring teams are eliminated.</li>
-            <li>Wild Card Round for borderline teams (e.g., mimicking a world leader’s speech).</li>
+            <li>Wild Card Round for borderline teams (e.g., mimicking a world leader&apos;s speech).</li>
           </ul>
         </div>
 
         {/* Round 3 Card */}
         <div className="bg-white shadow-md rounded-lg p-6">
           <h2 className="text-xl font-bold text-blue-700 mb-2">
-            Round 3: Summit Showdown (Buzzer & Strategy)
+            Round 3: Summit Showdown (Buzzer &amp; Strategy)
           </h2>
           <ul className="list-disc pl-5 space-y-2 text-gray-700">
             <li>Fast-paced buzzer round on global summits, organizations, and issues.</li>
             <li>Teams must buzz within 30 seconds.</li>
-            <li>Correct answers earn "Summit Coins"; wrong answers deduct 1 mark.</li>
+            <li>Correct answers earn &quot;Summit Coins&quot;; wrong answers deduct 1 mark.</li>
           </ul>
         </div>
 
         {/* Round 4 Card */}
         <div className="bg-white shadow-md rounded-lg p-6">
           <h2 className="text-xl font-bold text-blue-700 mb-2">
-            Round 4: Crisis Room (Role Play & Debate)
+            Round 4: Crisis Room (Role Play &amp; Debate)
           </h2>
           <ul className="list-disc pl-5 space-y-2 text-gray-700">
             <li>Each team represents a country in a crisis summit.</li>
@@ -105,7 +105,7 @@ export default function CompetitionDetails() {
 
         {/* Rules Card */}
         <div className="bg-white shadow-md rounded-lg p-6 col-span-1 md:col-span-2 lg:col-span-3">
-          <h2 className="text-xl font-bold text-red-700 mb-2">General Rules & Regulations</h2>
+          <h2 className="text-xl font-bold text-red-700 mb-2">General Rules &amp; Regulations</h2>
           <ul className="list-disc pl-5 space-y-2 text-gray-700">
             <li>Entry Fees: ₹250 per group.</li>
             <li>Each school can participate with only 1 group (5 students max).</li>
@@ -115,7 +115,7 @@ export default function CompetitionDetails() {
             <li>Props Allowed: Charts, flags, creative presentations.</li>
             <li>Strict adherence to time limits; cheating leads to disqualification.</li>
             <li>No use of mobile phones or external help.</li>
-            <li>Judges’ decision is final and binding.</li>
+            <li>Judges&apos; decision is final and binding.</li>
             <li>Breakfast included in entry fees; lunch is paid.</li>
             <li>Decent color dress code for students.</li>
           </ul>
