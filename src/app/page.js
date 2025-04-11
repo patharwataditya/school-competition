@@ -1,8 +1,9 @@
 import React from "react";
+import Link from "next/link";
 
 export default function CompetitionDetails() {
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4 relative">
       {/* Header */}
       <header className="text-center mb-8">
         <h1 className="text-3xl font-bold text-blue-800">
@@ -15,6 +16,22 @@ export default function CompetitionDetails() {
           INTER-SCHOOL COMPETITION - HON. BABANRAO BIRNALE TROPHY (2025-26)
         </p>
       </header>
+
+      {/* Register and Login Buttons */}
+      <div className="absolute top-4 right-4 flex gap-4">
+        <Link
+          href="/register"
+          className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
+        >
+          Register
+        </Link>
+        <Link
+          href="/login"
+          className="bg-gray-200 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-300 transition-colors"
+        >
+          Login
+        </Link>
+      </div>
 
       {/* Card Container */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl w-full">
