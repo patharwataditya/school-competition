@@ -1,24 +1,29 @@
-//login page
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
+  const router = useRouter();
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("YOUR_API_GATEWAY_URL/login", {
+      const response = await fetch("https://ud2bqdxp3m.execute-api.us-east-1.amazonaws.com/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
       const data = await response.json();
-      if (data.token) {
-        localStorage.setItem("token", data.token);
+      
+      if (response.status === 200) {
+        // Store email in localStorage for later use
+        localStorage.setItem("userEmail", form.email);
         alert(data.message || "Login successful!");
+        router.push("/home");
       } else {
         alert(data.message || "Invalid credentials");
       }
@@ -83,9 +88,9 @@ export default function Login() {
         <div className="text-center">
           <p className="text-sm text-gray-600">
             Don't have an account?{" "}
-            <a href="/register" className="font-medium text-blue-600 hover:text-blue-700">
+            <Link href="/register" className="font-medium text-blue-600 hover:text-blue-700">
               Register here
-            </a>
+            </Link>
           </p>
         </div>
       </div>

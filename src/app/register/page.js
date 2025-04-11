@@ -1,22 +1,39 @@
-//register page
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function Signup() {
   const [form, setForm] = useState({ school_name: "", email: "", password: "" });
+  const router = useRouter();
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("YOUR_API_GATEWAY_URL/signup", {
+      // Format the request body according to Lambda function expectations
+      const requestBody = {
+        email: form.email,
+        password: form.password,
+        schoolName: form.school_name
+      };
+      
+      const response = await fetch("https://ud2bqdxp3m.execute-api.us-east-1.amazonaws.com/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify(requestBody),
       });
       const data = await response.json();
-      alert(data.message || "Signup successful!");
+      
+      if (response.status === 201) {
+        // Store email in localStorage for later use
+        localStorage.setItem("userEmail", form.email);
+        alert(data.message || "Signup successful!");
+        router.push("/home");
+      } else {
+        alert(data.message || "Signup failed: " + (data.message || "Unknown error"));
+      }
     } catch (error) {
       alert("An error occurred. Please try again.");
     }
@@ -95,9 +112,9 @@ export default function Signup() {
         <div className="text-center">
           <p className="text-sm text-gray-600">
             Already have an account?{" "}
-            <a href="/login" className="font-medium text-blue-600 hover:text-blue-700">
+            <Link href="/login" className="font-medium text-blue-600 hover:text-blue-700">
               Login here
-            </a>
+            </Link>
           </p>
         </div>
       </div>
