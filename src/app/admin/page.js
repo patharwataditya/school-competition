@@ -123,12 +123,15 @@ export default function AdminPage() {
     }
 
     // Convert topics array to CSV format
-    const headers = ["Topic", "Status", "School Name", "Email"];
+    const headers = ["Topic", "Status", "School Name", "Email", "Students"];
     const csvContent = [
       headers.join(","),
-      ...topics.map(topic => 
-        `"${topic.topic}","${topic.assigned}","${topic.schoolName}","${topic.email}"`
-      )
+      ...topics.map(topic => {
+        const students = Array.isArray(topic.students) && topic.students.length
+          ? topic.students.join('; ')
+          : 'none';
+        return `"${topic.topic}","${topic.assigned}","${topic.schoolName}","${topic.email}","${students}"`;
+      })
     ].join("\n");
 
     // Create download link
@@ -241,42 +244,26 @@ export default function AdminPage() {
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                   <tr>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Topic
-                    </th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Status
-                    </th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      School Name
-                    </th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Email
-                    </th>
-                    <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Action
-                    </th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Topic</th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">School Name</th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Students</th>
+                    <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
                   {topics.map((topic, index) => (
                     <tr key={index} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                        {topic.topic}
-                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{topic.topic}</td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                           topic.assigned === 'none' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'
-                        }`}>
-                          {topic.assigned === 'none' ? 'Available' : 'Assigned'}
-                        </span>
+                        }`}>{topic.assigned === 'none' ? 'Available' : 'Assigned'}</span>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {topic.schoolName === 'none' ? '—' : topic.schoolName}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {topic.email === 'none' ? '—' : topic.email}
-                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{topic.schoolName === 'none' ? '—' : topic.schoolName}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{topic.email === 'none' ? '—' : topic.email}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{Array.isArray(topic.students) && topic.students.length ? topic.students.join(', ') : '—'}</td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <button
                           onClick={() => handleRemoveTopic(topic.topic)}
