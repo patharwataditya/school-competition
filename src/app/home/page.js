@@ -9,45 +9,52 @@ export default function HomePage() {
   const [userEmail, setUserEmail] = useState("");
   const [selectedTopic, setSelectedTopic] = useState(null);
   const [schoolName, setSchoolName] = useState("");
+  const [studentCount, setStudentCount] = useState(1);
+  const [students, setStudents] = useState([""]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [userTopic, setUserTopic] = useState(null);
   const [error, setError] = useState("");
   const router = useRouter();
 
   useEffect(() => {
-    // Check if user is logged in
+    // Check if user is logged in and then fetch topics
     const email = localStorage.getItem("userEmail");
     if (!email) {
       router.push("/login");
       return;
     }
     setUserEmail(email);
-    
-    fetchTopics();
+    fetchTopics(email);
   }, [router]);
 
-  const fetchTopics = async () => {
+  const fetchTopics = async (emailArg) => {
     setIsLoading(true);
     setError("");
     try {
-      const response = await fetch("https://ud2bqdxp3m.execute-api.us-east-1.amazonaws.com/listtopic");
+      const response = await fetch(
+        "https://ud2bqdxp3m.execute-api.us-east-1.amazonaws.com/listtopic"
+      );
       const data = await response.json();
-      
+
       if (data.topics) {
         setTopics(data.topics);
-        
+
         // Check if user has already selected a topic
-        const userSelectedTopic = data.topics.find(topic => 
-          topic.assigned === 'assigned' && topic.email === userEmail
+        const alreadySelected = data.topics.find(
+          (topic) => topic.assigned === "assigned" && topic.email === emailArg
         );
-        
-        if (userSelectedTopic) {
-          setUserTopic(userSelectedTopic);
+
+        if (alreadySelected) {
+          setUserTopic(alreadySelected);
+        } else {
+          setUserTopic(null);
         }
       }
-    } catch (error) {
-      console.error("Error fetching topics:", error);
-      setError("Failed to load topics. Please refresh the page and try again.");
+    } catch (err) {
+      console.error("Error fetching topics:", err);
+      setError(
+        "Failed to load topics. Please refresh the page and try again."
+      );
     } finally {
       setIsLoading(false);
     }
@@ -55,55 +62,96 @@ export default function HomePage() {
 
   const handleSelectTopic = (topic) => {
     if (userTopic) {
-      // User already has a topic
+      // User already has a topic, do nothing
       return;
     }
     setSelectedTopic(topic);
+    // Reset student inputs on new selection
+    setStudentCount(1);
+    setStudents([""]);
     // Scroll to the application form
     setTimeout(() => {
-      document.getElementById('applicationForm')?.scrollIntoView({ 
-        behavior: 'smooth',
-        block: 'center'
-      });
+      document
+        .getElementById("applicationForm")
+        ?.scrollIntoView({ behavior: "smooth", block: "center" });
     }, 100);
+  };
+
+  const handleCountChange = (e) => {
+    const count = parseInt(e.target.value, 10);
+    setStudentCount(count);
+    setStudents((prev) => {
+      const newArr = [...prev];
+      if (newArr.length < count) {
+        // add empty strings
+        return newArr.concat(Array(count - newArr.length).fill(""));
+      }
+      return newArr.slice(0, count);
+    });
+  };
+
+  const handleStudentNameChange = (index, value) => {
+    setStudents((prev) => {
+      const updated = [...prev];
+      updated[index] = value;
+      return updated;
+    });
   };
 
   const handleApply = async (e) => {
     e.preventDefault();
-    
+
     if (!selectedTopic || !schoolName.trim()) {
       setError("Please select a topic and enter your school name.");
       return;
     }
-    
+
+    // Validate student names
+    if (students.length < 1 || students.length > 5) {
+      setError("Please select between 1 and 5 students.");
+      return;
+    }
+    for (let i = 0; i < students.length; i++) {
+      if (!students[i].trim()) {
+        setError(`Please enter a name for Student ${i + 1}.`);
+        return;
+      }
+    }
+
     setIsSubmitting(true);
     setError("");
-    
+
     try {
-      const response = await fetch("https://26zh11j7rc.execute-api.us-east-1.amazonaws.com/SCupdateTopic", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          topicName: selectedTopic.topic,
-          schoolName: schoolName.trim(),
-          email: userEmail
-        }),
-      });
-      
+      const response = await fetch(
+        "https://26zh11j7rc.execute-api.us-east-1.amazonaws.com/SCupdateTopic",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            topicName: selectedTopic.topic,
+            schoolName: schoolName.trim(),
+            email: userEmail,
+            students: students.map((s) => s.trim()),
+          }),
+        }
+      );
+
       const data = await response.json();
-      
+
       if (response.status === 200) {
-        // Success
-        alert("Congratulations! Your topic has been reserved successfully.");
+        alert(
+          "Congratulations! Your topic has been reserved successfully."
+        );
         setSelectedTopic(null);
         setSchoolName("");
-        fetchTopics(); // Refresh the topics
+        setStudentCount(1);
+        setStudents([""]);
+        fetchTopics(userEmail); // Refresh the topics
       } else {
-        // Error
-        setError(data.message || "Failed to reserve topic. Please try another one.");
+        setError(data.message || "Failed to reserve topic. Please try again.");
       }
-    } catch (error) {
-      console.error("Error applying for topic:", error);
+    } catch (err) {
+      console.error("Error applying for topic:", err);
       setError("An error occurred. Please try again.");
     } finally {
       setIsSubmitting(false);
@@ -147,21 +195,25 @@ export default function HomePage() {
           </div>
         </div>
       </header>
-      
+
       {/* Main content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Welcome Banner */}
         <div className="bg-white rounded-lg shadow-md p-6 mb-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div>
-              <h2 className="text-2xl font-bold text-blue-800 mb-2">Welcome to the School Competition Portal!</h2>
+              <h2 className="text-2xl font-bold text-blue-800 mb-2">
+                Welcome to the School Competition Portal!
+              </h2>
               <p className="text-gray-600">
                 Logged in as: <span className="font-medium">{userEmail}</span>
               </p>
             </div>
             <div className="mt-4 md:mt-0">
               <div className="bg-blue-50 border border-blue-200 rounded-md p-4 text-center">
-                <p className="text-blue-800 font-medium mb-1">Competition Status</p>
+                <p className="text-blue-800 font-medium mb-1">
+                  Competition Status
+                </p>
                 <p className="text-green-600 font-bold">
                   {userTopic ? "Topic Selected" : "Ready to Select Topic"}
                 </p>
@@ -169,16 +221,20 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-        
+
         {/* User's selected topic card */}
         {userTopic && (
           <div className="mb-8">
-            <h2 className="text-xl font-bold text-blue-800 mb-4">Your Selected Topic</h2>
+            <h2 className="text-xl font-bold text-blue-800 mb-4">
+              Your Selected Topic
+            </h2>
             <div className="bg-green-50 border-l-4 border-green-500 rounded-md shadow-md overflow-hidden">
               <div className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="text-xl font-bold text-green-800">{userTopic.topic}</h3>
+                    <h3 className="text-xl font-bold text-green-800">
+                      {userTopic.topic}
+                    </h3>
                     <p className="text-gray-600 mt-2">
                       <span className="font-medium">School:</span> {userTopic.schoolName}
                     </p>
@@ -196,21 +252,23 @@ export default function HomePage() {
             </div>
           </div>
         )}
-        
+
         {/* Available Topics Section */}
         {!userTopic && (
           <>
-            <h2 className="text-xl font-bold text-blue-800 mb-4">Available Competition Topics</h2>
+            <h2 className="text-xl font-bold text-blue-800 mb-4">
+              Available Competition Topics
+            </h2>
             <p className="text-gray-600 mb-6">
               Select from the available topics below. Once reserved, a topic becomes exclusively yours for the competition.
             </p>
-            
+
             {error && (
               <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-6 text-red-700">
                 <p>{error}</p>
               </div>
             )}
-            
+
             {isLoading ? (
               <div className="flex justify-center items-center p-12">
                 <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-700"></div>
@@ -220,11 +278,12 @@ export default function HomePage() {
                 {topics.filter(topic => topic.assigned === 'none').map((topic, index) => (
                   <div 
                     key={index} 
-                    className={`
-                      bg-white rounded-lg shadow-md overflow-hidden
-                      border-2 ${selectedTopic?.topic === topic.topic ? 'border-blue-500' : 'border-transparent'}
-                      transition-all hover:shadow-lg
-                    `}
+                    className={
+                      `
+                        bg-white rounded-lg shadow-md overflow-hidden
+                        border-2 ${selectedTopic?.topic === topic.topic ? 'border-blue-500' : 'border-transparent'}
+                        transition-all hover:shadow-lg
+                      `}
                     onClick={() => handleSelectTopic(topic)}
                   >
                     <div className="p-6">
@@ -244,7 +303,7 @@ export default function HomePage() {
                 ))}
               </div>
             )}
-            
+
             {/* Unavailable Topics Section */}
             <div className="mt-8">
               <h3 className="text-lg font-bold text-gray-600 mb-4">Already Assigned Topics</h3>
@@ -266,7 +325,7 @@ export default function HomePage() {
                 ))}
               </div>
             </div>
-            
+
             {/* Application Form */}
             {selectedTopic && (
               <div id="applicationForm" className="mt-12 bg-white rounded-lg shadow-md p-6 border-t-4 border-blue-500">
@@ -297,9 +356,39 @@ export default function HomePage() {
                       onChange={(e) => setSchoolName(e.target.value)}
                       placeholder="Enter your school's name"
                       required
-                      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full text-black px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   </div>
+                  <div className="mb-6">
+                    <label className="block text-gray-700 font-medium mb-2" htmlFor="studentCount">
+                      Number of Students <span className="text-red-500">*</span>
+                    </label>
+                    <select
+                      id="studentCount"
+                      value={studentCount}
+                      onChange={handleCountChange}
+                      className="w-full text-black px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                      {[1,2,3,4,5].map((n) => (
+                        <option key={n} value={n}>{n}</option>
+                      ))}
+                    </select>
+                  </div>
+                  {students.map((student, index) => (
+                    <div className="mb-4" key={index}>
+                      <label className="block text-gray-700 font-medium mb-2">
+                        Student {index + 1} Name <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        value={student}
+                        onChange={(e) => handleStudentNameChange(index, e.target.value)}
+                        placeholder={`Enter name of student ${index + 1}`}
+                        required
+                        className="w-full text-black px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+                  ))}
                   <div className="flex justify-end">
                     <button
                       type="button"
@@ -329,35 +418,32 @@ export default function HomePage() {
             )}
           </>
         )}
-        
-        {/* Competition Rules and Information */}
-       
-<div className="mt-12 bg-blue-50 rounded-lg shadow-md p-6">
-  <h2 className="text-xl font-bold text-blue-800 mb-4">Competition Rules & Information</h2>
-  <div className="space-y-4 text-gray-700">
-    <ul className="list-disc list-inside space-y-2">
-      <li><span className="font-medium">Entry Fees:</span> Per group ₹250.</li>
-      <li><span className="font-medium">Participation:</span> Each school should participate with only one group.</li>
-      <li><span className="font-medium">Group Composition:</span> Students can form mixed or single grade groups from Grade 8th, 9th, and 10th.</li>
-      <li><span className="font-medium">Group Size:</span> Each group must consist of exactly 5 students.</li>
-      <li><span className="font-medium">Teacher Requirement:</span> One in-charge teacher from the respective school is required.</li>
-      <li><span className="font-medium">Entry Finalization:</span> A correctly filled Google Form and paid entry fees are mandatory to finalize the entry.</li>
-      <li><span className="font-medium">Props Allowed:</span> Charts, flags, and creative presentations are permitted.</li>
-      <li><span className="font-medium">Time Limits:</span> Each round will have a separate, strictly followed time limit.</li>
-      <li><span className="font-medium">Cheating:</span> Any form of cheating will lead to immediate disqualification.</li>
-      <li><span className="font-medium">Fair Play:</span> No use of mobile phones or external assistance is allowed.</li>
-      <li><span className="font-medium">Judges’ Decision:</span> The decision of the judges will be final and binding.</li>
-      <li><span className="font-medium">Meals:</span> Breakfast is included in the entry fees; lunch will be available at an additional cost.</li>
-      <li><span className="font-medium">Dress Code:</span> Students should wear decent coloured dress.</li>
-    </ul>
-    <p className="pt-4">
-      <span className="font-medium">Support:</span> For any questions or assistance, please contact the competition organizers at <a href="mailto:support@schoolcompetition.org" className="text-blue-600 hover:underline">support@schoolcompetition.org</a>.
-    </p>
-  </div>
-</div>
 
+        {/* Competition Rules and Information */}
+        <div className="mt-12 bg-blue-50 rounded-lg shadow-md p-6">
+          <h2 className="text-xl font-bold text-blue-800 mb-4">Competition Rules & Information</h2>
+          <div className="space-y-4 text-gray-700">
+            <ul className="list-disc list-inside space-y-2">
+              <li><span className="font-medium">Entry Fees:</span> Per group ₹250.</li>
+              <li><span className="font-medium">Participation:</span> Each school should participate with only one group.</li>
+              <li><span className="font-medium">Group Composition:</span> Students can form mixed or single grade groups from Grade 8th, 9th, and 10th.</li>
+              <li><span className="font-medium">Group Size:</span> Each group must consist of exactly 5 students.</li>
+              <li><span className="font-medium">Teacher Requirement:</span> One in-charge teacher from the respective school is required.</li>
+              <li><span className="font-medium">Entry Finalization:</span> A correctly filled Google Form and paid entry fees are mandatory to finalize the entry.</li>
+              <li><span className="font-medium">Props Allowed:</span> Charts, flags, and creative presentations are permitted.</li>
+              <li><span className="font-medium">Time Limits:</span> Each round will have a separate, strictly followed time limit.</li>
+              <li><span className="font-medium">Cheating:</span> Any form of cheating will lead to immediate disqualification.</li>
+              <li><span className="font-medium">Fair Play:</span> No use of mobile phones or external assistance is allowed.</li>
+              <li><span className="font-medium">Judges' Decision:</span> The decision of the judges will be final and binding.</li>
+              <li><span className="font-medium">Meals:</span> Breakfast is included in the entry fees; lunch will be available at an additional cost.</li>
+              <li><span className="font-medium">Dress Code:</span> Students should wear decent coloured dress.</li>
+            </ul>
+            <p className="pt-4">
+              <span className="font-medium">Support:</span> For any questions or assistance, please contact the competition organizers at <a href="mailto:support@schoolcompetition.org" className="text-blue-600 hover:underline">support@schoolcompetition.org</a>.
+            </p>
+          </div>
+        </div>
       </main>
-      
     </div>
   );
 }
