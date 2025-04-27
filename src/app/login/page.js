@@ -12,7 +12,7 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("https://ud2bqdxp3m.execute-api.us-east-1.amazonaws.com/login", {
+      const response = await fetch("https://eaa2t16brb.execute-api.ap-south-1.amazonaws.com/SClogin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),

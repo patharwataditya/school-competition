@@ -32,15 +32,24 @@ export default function HomePage() {
     setError("");
     try {
       const response = await fetch(
-        "https://ud2bqdxp3m.execute-api.us-east-1.amazonaws.com/listtopic"
+        "https://c6c2z3v06c.execute-api.ap-south-1.amazonaws.com/SClist"
       );
       const data = await response.json();
 
       if (data.topics) {
-        setTopics(data.topics);
+        // Transform the API response to match our frontend structure
+        const transformedTopics = data.topics.map(item => ({
+          topic: item.topic_name,
+          assigned: item.assigned === 'none' ? 'none' : 'assigned',
+          email: item.email,
+          schoolName: item.schoolName,
+          students: item.students === 'none' ? [] : item.students.split(',')
+        }));
+
+        setTopics(transformedTopics);
 
         // Check if user has already selected a topic
-        const alreadySelected = data.topics.find(
+        const alreadySelected = transformedTopics.find(
           (topic) => topic.assigned === "assigned" && topic.email === emailArg
         );
 
@@ -123,12 +132,12 @@ export default function HomePage() {
 
     try {
       const response = await fetch(
-        "https://26zh11j7rc.execute-api.us-east-1.amazonaws.com/SCupdateTopic",
+        "https://eaa2t16brb.execute-api.ap-south-1.amazonaws.com/SCupdate",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            topicName: selectedTopic.topic,
+            topicName: selectedTopic.topic, // Using topic property that maps to topic_name in the backend
             schoolName: schoolName.trim(),
             email: userEmail,
             students: students.map((s) => s.trim()),
@@ -354,7 +363,7 @@ export default function HomePage() {
                       id="schoolName"
                       value={schoolName}
                       onChange={(e) => setSchoolName(e.target.value)}
-                      placeholder="Enter your school&#39;s name"
+                      placeholder="Enter your school's name"
                       required
                       className="w-full text-black px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
@@ -434,7 +443,7 @@ export default function HomePage() {
               <li><span className="font-medium">Time Limits:</span> Each round will have a separate, strictly followed time limit.</li>
               <li><span className="font-medium">Cheating:</span> Any form of cheating will lead to immediate disqualification.</li>
               <li><span className="font-medium">Fair Play:</span> No use of mobile phones or external assistance is allowed.</li>
-              <li><span className="font-medium">Judges&apos; Decision:</span> The decision of the judges will be final and binding.</li>
+              <li><span className="font-medium">Judges' Decision:</span> The decision of the judges will be final and binding.</li>
               <li><span className="font-medium">Meals:</span> Breakfast is included in the entry fees; lunch will be available at an additional cost.</li>
               <li><span className="font-medium">Dress Code:</span> Students should wear decent coloured dress.</li>
             </ul>

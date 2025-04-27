@@ -50,7 +50,7 @@ export default function AdminPage() {
   const fetchTopics = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch("https://ud2bqdxp3m.execute-api.us-east-1.amazonaws.com/listtopic");
+      const response = await fetch("https://c6c2z3v06c.execute-api.ap-south-1.amazonaws.com/SClist");
       const data = await response.json();
       if (data.topics) {
         setTopics(data.topics);
@@ -71,7 +71,7 @@ export default function AdminPage() {
     }
 
     try {
-      const response = await fetch("https://ud2bqdxp3m.execute-api.us-east-1.amazonaws.com/addtopic", {
+      const response = await fetch("https://eaa2t16brb.execute-api.ap-south-1.amazonaws.com/SCadd", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ topicName: newTopic.trim() }),
@@ -95,7 +95,7 @@ export default function AdminPage() {
   const handleRemoveTopic = async (topicName) => {
     if (window.confirm(`Are you sure you want to remove the topic: "${topicName}"?`)) {
       try {
-        const response = await fetch("https://26zh11j7rc.execute-api.us-east-1.amazonaws.com/SCremoveTopic", {
+        const response = await fetch("https://eaa2t16brb.execute-api.ap-south-1.amazonaws.com/SCremove", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ topicName }),
@@ -127,10 +127,12 @@ export default function AdminPage() {
     const csvContent = [
       headers.join(","),
       ...topics.map(topic => {
-        const students = Array.isArray(topic.students) && topic.students.length
-          ? topic.students.join('; ')
+        // Process students string if it's a comma-separated string
+        const students = topic.students !== 'none' 
+          ? topic.students
           : 'none';
-        return `"${topic.topic}","${topic.assigned}","${topic.schoolName}","${topic.email}","${students}"`;
+        
+        return `"${topic.topic_name}","${topic.assigned}","${topic.schoolName}","${topic.email}","${students}"`;
       })
     ].join("\n");
 
@@ -255,7 +257,7 @@ export default function AdminPage() {
                 <tbody className="bg-white divide-y divide-gray-200">
                   {topics.map((topic, index) => (
                     <tr key={index} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{topic.topic}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{topic.topic_name}</td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                           topic.assigned === 'none' ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800'
@@ -263,10 +265,12 @@ export default function AdminPage() {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{topic.schoolName === 'none' ? '—' : topic.schoolName}</td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{topic.email === 'none' ? '—' : topic.email}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{Array.isArray(topic.students) && topic.students.length ? topic.students.join(', ') : '—'}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {topic.students === 'none' ? '—' : topic.students}
+                      </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <button
-                          onClick={() => handleRemoveTopic(topic.topic)}
+                          onClick={() => handleRemoveTopic(topic.topic_name)}
                           className="text-red-600 hover:text-red-900 focus:outline-none"
                         >
                           Remove

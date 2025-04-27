@@ -16,10 +16,10 @@ export default function Signup() {
       const requestBody = {
         email: form.email,
         password: form.password,
-        schoolName: form.school_name
+        school_name: form.school_name  // Changed from schoolName to school_name to match Lambda expectations
       };
       
-      const response = await fetch("https://ud2bqdxp3m.execute-api.us-east-1.amazonaws.com/register", {
+      const response = await fetch("https://eaa2t16brb.execute-api.ap-south-1.amazonaws.com/SCresgister", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(requestBody),
