@@ -443,7 +443,7 @@ export default function HomePage() {
               <li><span className="font-medium">Time Limits:</span> Each round will have a separate, strictly followed time limit.</li>
               <li><span className="font-medium">Cheating:</span> Any form of cheating will lead to immediate disqualification.</li>
               <li><span className="font-medium">Fair Play:</span> No use of mobile phones or external assistance is allowed.</li>
-              <li><span className="font-medium">Judges' Decision:</span> The decision of the judges will be final and binding.</li>
+              <li><span className="font-medium">Judges&apos; Decision:</span> The decision of the judges will be final and binding.</li>
               <li><span className="font-medium">Meals:</span> Breakfast is included in the entry fees; lunch will be available at an additional cost.</li>
               <li><span className="font-medium">Dress Code:</span> Students should wear decent coloured dress.</li>
             </ul>
