@@ -151,7 +151,7 @@ export default function CompetitionDetails() {
           <ul className="list-disc pl-5 space-y-2 text-gray-700">
             <li>Entry Fees: ₹250 per group.</li>
             <li>Each school can participate with only 1 group (5 students max).</li>
-            <li>Students can be from grades 8th, 9th, and 10th (mixed or single grade).</li>
+            <li>Students should be from grade 8th, 9th and 10th as a combined group.</li>
             <li>One in-charge teacher required from each school.</li>
             <li>Correctly filled Entry Form + paid entry fees finalize participation.</li>
             <li>Props Allowed: Charts, flags, creative presentations.</li>
