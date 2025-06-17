@@ -3,18 +3,35 @@ import Link from "next/link";
 
 export default function CompetitionDetails() {
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4 relative">
+     <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4 relative">
       {/* Header */}
-      <header className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-blue-800">
-          APPASAHEB BIRNALE PUBLIC SCHOOL SANGLI
-        </h1>
-        <p className="text-xl text-gray-600 mt-2">
-          WORLD LEADERSHIP GLOBAL FORUM
-        </p>
-        <p className="text-lg text-gray-500">
-          INTER-SCHOOL COMPETITION - HON. BABANRAO BIRNALE TROPHY (2025-26)
-        </p>
+      <header className="mb-8">
+        <div className="flex items-center justify-center gap-6">
+          {/* Logo Div */}
+          <div className="flex-shrink-0">
+            <img 
+              src="../logo.png" 
+              alt="School Logo" 
+              className="h-26 w-auto object-contain"
+            />
+          </div>
+          
+          {/* Header Text Div */}
+          <div className="text-center">
+            <h1 className="text-3xl font-bold text-blue-800">
+              APPASAHEB BIRNALE PUBLIC SCHOOL, SANGLI
+            </h1>
+            <p className="text-sm text-gray-500 mt-1">
+              Affiliation No: 1130074
+            </p>
+            <p className="text-xl text-gray-600 mt-2">
+              WORLD LEADERSHIP GLOBAL FORUM
+            </p>
+            <p className="text-lg text-gray-500">
+              INTER-SCHOOL COMPETITION - HON. BABANRAO BIRNALE TROPHY (2025-26)
+            </p>
+          </div>
+        </div>
       </header>
 
       {/* Register and Login Buttons */}
@@ -101,6 +118,31 @@ export default function CompetitionDetails() {
             <li>Win over neutral nations (judges + audience).</li>
             <li>Best arguments win the competition.</li>
           </ul>
+        </div>
+
+        {/* Prizes Card */}
+        <div className="bg-gradient-to-br from-yellow-50 to-orange-50 border-2 border-yellow-300 shadow-lg rounded-lg p-6">
+          <h2 className="text-xl font-bold text-orange-700 mb-4 flex items-center">
+            <span className="text-2xl mr-2">🏆</span>
+            Exciting Cash Prizes & Awards
+          </h2>
+          <div className="space-y-3">
+            <div className="flex items-center justify-between bg-yellow-100 p-3 rounded-md">
+              <span className="font-semibold text-yellow-800">🥇 1st Place</span>
+              <span className="text-yellow-700 font-bold">₹5,000 + Trophy</span>
+            </div>
+            <div className="flex items-center justify-between bg-gray-100 p-3 rounded-md">
+              <span className="font-semibold text-gray-700">🥈 2nd Place</span>
+              <span className="text-gray-600 font-bold">₹3,000 + Trophy</span>
+            </div>
+            <div className="flex items-center justify-between bg-orange-100 p-3 rounded-md">
+              <span className="font-semibold text-orange-700">🥉 3rd Place</span>
+              <span className="text-orange-600 font-bold">₹2,000 + Trophy</span>
+            </div>
+            <div className="bg-blue-50 p-3 rounded-md text-center">
+              <span className="text-blue-700 font-medium">🎖️ Participation Certificate to all participants</span>
+            </div>
+          </div>
         </div>
 
         {/* Rules Card */}
