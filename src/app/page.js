@@ -5,29 +5,29 @@ export default function CompetitionDetails() {
   return (
      <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4 relative">
       {/* Header */}
-      <header className="mb-8">
-        <div className="flex items-center justify-center gap-6">
+      <header className="mb-8 w-full">
+        <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-6">
           {/* Logo Div */}
           <div className="flex-shrink-0">
             <img 
               src="../logo.png" 
               alt="School Logo" 
-              className="h-26 w-auto object-contain"
+              className="h-20 md:h-26 w-auto object-contain"
             />
           </div>
           
           {/* Header Text Div */}
           <div className="text-center">
-            <h1 className="text-3xl font-bold text-blue-800">
+            <h1 className="text-xl md:text-3xl font-bold text-blue-800 leading-tight">
               APPASAHEB BIRNALE PUBLIC SCHOOL, SANGLI
             </h1>
-            <p className="text-sm text-gray-500 mt-1">
+            <p className="text-xs md:text-sm text-gray-500 mt-1">
               Affiliation No: 1130074
             </p>
-            <p className="text-xl text-gray-600 mt-2">
+            <p className="text-lg md:text-xl text-gray-600 mt-2">
               WORLD LEADERSHIP GLOBAL FORUM
             </p>
-            <p className="text-lg text-gray-500">
+            <p className="text-sm md:text-lg text-gray-500 px-2">
               INTER-SCHOOL COMPETITION - HON. BABANRAO BIRNALE TROPHY (2025-26)
             </p>
           </div>
@@ -35,16 +35,16 @@ export default function CompetitionDetails() {
       </header>
 
       {/* Register and Login Buttons */}
-      <div className="absolute top-4 right-4 flex gap-4">
+      <div className="absolute top-2 right-2 md:top-4 md:right-4 flex gap-2 md:gap-4">
         <Link
           href="/register"
-          className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
+          className="bg-blue-600 text-white px-3 py-1 md:px-4 md:py-2 text-sm rounded-md hover:bg-blue-700 transition-colors"
         >
           Register
         </Link>
         <Link
           href="/login"
-          className="bg-gray-200 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-300 transition-colors"
+          className="bg-gray-200 text-gray-800 px-3 py-1 md:px-4 md:py-2 text-sm rounded-md hover:bg-gray-300 transition-colors"
         >
           Login
         </Link>
